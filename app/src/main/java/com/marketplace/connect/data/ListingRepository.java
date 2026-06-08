@@ -28,6 +28,14 @@ public class ListingRepository {
         DatabaseExecutor.run(() -> listingDao.insert(listing));
     }
 
+    public void seedDemoDataIfEmpty(List<Listing> listings) {
+        DatabaseExecutor.run(() -> {
+            if (listingDao.count() == 0 && listings != null && !listings.isEmpty()) {
+                listingDao.insertAll(listings);
+            }
+        });
+    }
+
     public void getById(long id, ListingCallback callback) {
         DatabaseExecutor.run(() -> {
             Listing listing = listingDao.getById(id);

@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Marketplace Connect</string>
+    <string name="home_title">Marketplace Listings</string>
+    <string name="search_hint">Search by title or description</string>
+    <string name="search">Search</string>
+    <string name="add_listing">Add Listing</string>
+    <string name="save_listing">Save Listing</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="price">Price</string>
+    <string name="listing_saved">Listing saved successfully</string>
+    <string name="error_title_required">Title is required</string>
+    <string name="error_description_required">Description is required</string>
+    <string name="error_price_invalid">Enter a valid price greater than 0</string>
+    <string name="no_listings_found">No listings found. Add a listing to get started.</string>
+
+    <string-array name="categories">
+        <item>Electronics</item>
+        <item>Fashion</item>
+        <item>Home</item>
+        <item>Sports</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="categories_with_all">
+        <item>All</item>
+        <item>Electronics</item>
+        <item>Fashion</item>
+        <item>Home</item>
+        <item>Sports</item>
+        <item>Other</item>
+    </string-array>
+</resources>

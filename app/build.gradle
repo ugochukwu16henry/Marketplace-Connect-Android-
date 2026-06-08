@@ -39,6 +39,7 @@ dependencies {
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
 
     implementation 'androidx.lifecycle:lifecycle-livedata:2.8.4'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.8.4'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
