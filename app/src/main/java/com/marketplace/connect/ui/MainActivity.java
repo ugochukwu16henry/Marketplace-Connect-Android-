@@ -21,12 +21,14 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String STATE_QUERY = "state_query";
     private static final String STATE_CATEGORY_POSITION = "state_category_position";
+    private static final String STATE_SORT_POSITION = "state_sort_position";
 
     private MainViewModel viewModel;
     private ListingAdapter adapter;
     private TextView emptyStateText;
     private EditText searchInput;
     private Spinner categorySpinner;
+    private Spinner sortSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
         searchInput = findViewById(R.id.inputSearch);
         categorySpinner = findViewById(R.id.spinnerCategoryFilter);
+        sortSpinner = findViewById(R.id.spinnerSort);
         emptyStateText = findViewById(R.id.textEmptyState);
 
         setupCategorySpinner();
+        setupSortSpinner();
         setupRecyclerView();
         setupActions();
 
@@ -47,9 +51,12 @@ public class MainActivity extends AppCompatActivity {
             searchInput.setText(savedInstanceState.getString(STATE_QUERY, ""));
             int categoryPosition = savedInstanceState.getInt(STATE_CATEGORY_POSITION, 0);
             categorySpinner.setSelection(categoryPosition);
+            int sortPosition = savedInstanceState.getInt(STATE_SORT_POSITION, 0);
+            sortSpinner.setSelection(sortPosition);
         } else {
             searchInput.setText(viewModel.getCurrentQuery());
             setCategoryByValue(viewModel.getCurrentCategory());
+            setSortByOption(viewModel.getCurrentSortOption());
         }
 
         viewModel.getListings().observe(this, listings -> {
@@ -85,6 +92,16 @@ public class MainActivity extends AppCompatActivity {
         listingsRecycler.setAdapter(adapter);
     }
 
+    private void setupSortSpinner() {
+        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.sort_options,
+                android.R.layout.simple_spinner_item
+        );
+        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sortSpinner.setAdapter(sortAdapter);
+    }
+
     private void setupActions() {
         FloatingActionButton fabAdd = findViewById(R.id.fabAddListing);
         fabAdd.setOnClickListener(v -> startActivity(new Intent(this, AddListingActivity.class)));
@@ -95,7 +112,8 @@ public class MainActivity extends AppCompatActivity {
     private void applyFilters() {
         String query = searchInput.getText().toString();
         String category = categorySpinner.getSelectedItem().toString();
-        viewModel.applyFilters(query, category);
+        MainViewModel.SortOption sortOption = parseSortOption(sortSpinner.getSelectedItemPosition());
+        viewModel.applyFilters(query, category, sortOption);
     }
 
     @Override
@@ -103,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putString(STATE_QUERY, searchInput.getText().toString());
         outState.putInt(STATE_CATEGORY_POSITION, categorySpinner.getSelectedItemPosition());
+        outState.putInt(STATE_SORT_POSITION, sortSpinner.getSelectedItemPosition());
     }
 
     private void setCategoryByValue(String categoryValue) {
@@ -117,5 +136,27 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
+    }
+
+    private MainViewModel.SortOption parseSortOption(int position) {
+        if (position == 1) {
+            return MainViewModel.SortOption.PRICE_LOW_HIGH;
+        }
+        if (position == 2) {
+            return MainViewModel.SortOption.PRICE_HIGH_LOW;
+        }
+        return MainViewModel.SortOption.NEWEST;
+    }
+
+    private void setSortByOption(MainViewModel.SortOption sortOption) {
+        if (sortOption == MainViewModel.SortOption.PRICE_LOW_HIGH) {
+            sortSpinner.setSelection(1);
+            return;
+        }
+        if (sortOption == MainViewModel.SortOption.PRICE_HIGH_LOW) {
+            sortSpinner.setSelection(2);
+            return;
+        }
+        sortSpinner.setSelection(0);
     }
 }
