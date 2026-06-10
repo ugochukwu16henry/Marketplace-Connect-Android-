@@ -6,7 +6,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -83,11 +85,14 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView listingsRecycler = findViewById(R.id.recyclerListings);
         listingsRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new ListingAdapter(listing -> {
-            Intent intent = new Intent(this, ListingDetailsActivity.class);
-            intent.putExtra(ListingDetailsActivity.EXTRA_LISTING_ID, listing.getId());
-            startActivity(intent);
-        });
+        adapter = new ListingAdapter(
+                listing -> {
+                    Intent intent = new Intent(this, ListingDetailsActivity.class);
+                    intent.putExtra(ListingDetailsActivity.EXTRA_LISTING_ID, listing.getId());
+                    startActivity(intent);
+                },
+                this::confirmDeleteListing
+        );
 
         listingsRecycler.setAdapter(adapter);
     }
@@ -146,6 +151,18 @@ public class MainActivity extends AppCompatActivity {
             return MainViewModel.SortOption.PRICE_HIGH_LOW;
         }
         return MainViewModel.SortOption.NEWEST;
+    }
+
+    private void confirmDeleteListing(Listing listing) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.delete_listing_confirm_title)
+                .setMessage(getString(R.string.delete_listing_confirm_message, listing.getTitle()))
+                .setPositiveButton(R.string.delete, (dialog, which) -> {
+                    viewModel.deleteListing(listing.getId());
+                    Toast.makeText(this, R.string.listing_deleted, Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 
     private void setSortByOption(MainViewModel.SortOption sortOption) {

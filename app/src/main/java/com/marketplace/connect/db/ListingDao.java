@@ -33,4 +33,7 @@ public interface ListingDao {
             "AND (:category = 'All' OR category = :category) " +
             "ORDER BY createdAt DESC")
     LiveData<List<Listing>> search(String searchQuery, String category);
+
+    @Query("DELETE FROM listings WHERE id = :listingId")
+    void deleteById(long listingId);
 }

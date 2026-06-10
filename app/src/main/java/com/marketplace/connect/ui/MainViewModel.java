@@ -68,6 +68,10 @@ public class MainViewModel extends AndroidViewModel {
         return state == null ? SortOption.NEWEST : state.sortOption;
     }
 
+    public void deleteListing(long listingId) {
+        repository.deleteById(listingId);
+    }
+
     public void ensureSeededData() {
         if (seeded) {
             return;

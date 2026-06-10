@@ -13,6 +13,12 @@
     <string name="error_description_required">Description is required</string>
     <string name="error_price_invalid">Enter a valid price greater than 0</string>
     <string name="no_listings_found">No listings found. Add a listing to get started.</string>
+    <string name="delete_listing">Delete listing</string>
+    <string name="delete_listing_confirm_title">Delete listing?</string>
+    <string name="delete_listing_confirm_message">This will permanently remove \"%1$s\".</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="listing_deleted">Listing deleted</string>
 
     <string-array name="categories">
         <item>Electronics</item>

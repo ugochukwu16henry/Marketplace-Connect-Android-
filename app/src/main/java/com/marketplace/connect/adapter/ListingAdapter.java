@@ -3,6 +3,7 @@ package com.marketplace.connect.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,10 +21,12 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
 
     private final List<Listing> listings = new ArrayList<>();
     private final OnListingClickListener clickListener;
+    private final OnListingDeleteListener deleteListener;
     private final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
-    public ListingAdapter(OnListingClickListener clickListener) {
+    public ListingAdapter(OnListingClickListener clickListener, OnListingDeleteListener deleteListener) {
         this.clickListener = clickListener;
+        this.deleteListener = deleteListener;
     }
 
     public void submitList(List<Listing> newItems) {
@@ -56,12 +59,14 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
         private final TextView titleText;
         private final TextView categoryText;
         private final TextView priceText;
+        private final ImageButton deleteButton;
 
         ListingViewHolder(@NonNull View itemView) {
             super(itemView);
             titleText = itemView.findViewById(R.id.textTitle);
             categoryText = itemView.findViewById(R.id.textCategory);
             priceText = itemView.findViewById(R.id.textPrice);
+            deleteButton = itemView.findViewById(R.id.buttonDelete);
         }
 
         void bind(Listing listing) {
@@ -70,10 +75,15 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
             priceText.setText(numberFormat.format(listing.getPrice()));
 
             itemView.setOnClickListener(v -> clickListener.onClicked(listing));
+            deleteButton.setOnClickListener(v -> deleteListener.onDeleteRequested(listing));
         }
     }
 
     public interface OnListingClickListener {
         void onClicked(Listing listing);
+    }
+
+    public interface OnListingDeleteListener {
+        void onDeleteRequested(Listing listing);
     }
 }

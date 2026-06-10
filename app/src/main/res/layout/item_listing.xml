@@ -4,37 +4,54 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    app:cardUseCompatPadding="true"
-    app:cardBackgroundColor="@color/md_theme_light_surface">
+    app:cardBackgroundColor="@color/md_theme_light_surface"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="12dp">
 
-        <TextView
-            android:id="@+id/textTitle"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/md_theme_light_onSurface"
-            android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/md_theme_light_onSurfaceVariant"
-            android:textAppearance="@style/TextAppearance.Material3.LabelLarge" />
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/md_theme_light_onSurface"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
 
-        <TextView
-            android:id="@+id/textPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:textColor="@color/md_theme_light_primary"
-            android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+            <TextView
+                android:id="@+id/textCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/md_theme_light_onSurfaceVariant"
+                android:textAppearance="@style/TextAppearance.Material3.LabelLarge" />
+
+            <TextView
+                android:id="@+id/textPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/md_theme_light_primary"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/buttonDelete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/delete_listing"
+            android:src="@android:drawable/ic_menu_delete"
+            app:tint="@color/md_theme_light_onSurfaceVariant" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

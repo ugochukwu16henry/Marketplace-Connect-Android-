@@ -43,6 +43,10 @@ public class ListingRepository {
         });
     }
 
+    public void deleteById(long id) {
+        DatabaseExecutor.run(() -> listingDao.deleteById(id));
+    }
+
     public interface ListingCallback {
         void onLoaded(Listing listing);
     }
