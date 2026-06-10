@@ -34,6 +34,13 @@
             android:layout_marginTop="8dp"
             android:text="@string/take_photo" />
 
+        <Button
+            android:id="@+id/buttonChooseGallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/choose_from_gallery" />
+
         <EditText
             android:id="@+id/inputTitle"
             android:layout_width="match_parent"

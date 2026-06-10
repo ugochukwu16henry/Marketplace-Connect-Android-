@@ -23,9 +23,11 @@
     <string name="cancel">Cancel</string>
     <string name="listing_deleted">Listing deleted</string>
     <string name="take_photo">Take photo</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
     <string name="listing_photo">Listing photo</string>
     <string name="camera_permission_required">Camera permission is required to take listing photos.</string>
     <string name="photo_capture_failed">Could not capture photo. Please try again.</string>
+    <string name="photo_upload_failed">Could not upload photo. Please try again.</string>
 
     <string-array name="categories">
         <item>Electronics</item>

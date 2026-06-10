@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -74,6 +75,9 @@ public class AddListingActivity extends AppCompatActivity {
                 }
             });
 
+    private final ActivityResultLauncher<PickVisualMediaRequest> pickImageLauncher =
+            registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), this::handlePickedImage);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,9 +93,11 @@ public class AddListingActivity extends AppCompatActivity {
         screenTitle = findViewById(R.id.textScreenTitle);
         saveButton = findViewById(R.id.buttonSaveListing);
         Button takePhotoButton = findViewById(R.id.buttonTakePhoto);
+        Button chooseGalleryButton = findViewById(R.id.buttonChooseGallery);
 
         setupCategorySpinner();
         takePhotoButton.setOnClickListener(v -> requestCameraAndCapture());
+        chooseGalleryButton.setOnClickListener(v -> launchGalleryPicker());
         saveButton.setOnClickListener(v -> saveListing());
 
         if (savedInstanceState != null) {
@@ -160,6 +166,30 @@ public class AddListingActivity extends AppCompatActivity {
             launchCamera();
         } else {
             requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+        }
+    }
+
+    private void launchGalleryPicker() {
+        pickImageLauncher.launch(
+                new PickVisualMediaRequest.Builder()
+                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                        .build()
+        );
+    }
+
+    private void handlePickedImage(Uri imageUri) {
+        if (imageUri == null) {
+            return;
+        }
+
+        try {
+            imagePath = ListingImageHelper.copyFromUri(this, imageUri);
+            savedImagePath = imagePath;
+            ListingImageHelper.bind(imagePreview, imagePath);
+        } catch (IOException e) {
+            imagePath = savedImagePath;
+            ListingImageHelper.bind(imagePreview, imagePath);
+            Toast.makeText(this, R.string.photo_upload_failed, Toast.LENGTH_SHORT).show();
         }
     }
 
