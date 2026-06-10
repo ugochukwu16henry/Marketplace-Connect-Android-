@@ -53,9 +53,9 @@ public class AddListingActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.categories,
-                android.R.layout.simple_spinner_item
+                R.layout.spinner_item
         );
-        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         categorySpinner.setAdapter(categoryAdapter);
     }
 

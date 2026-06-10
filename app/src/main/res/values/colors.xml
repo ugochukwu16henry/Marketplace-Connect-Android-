@@ -3,4 +3,8 @@
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
     <color name="md_theme_light_background">#F8F9FB</color>
     <color name="md_theme_light_onBackground">#121212</color>
+    <color name="md_theme_light_surface">#FFFFFF</color>
+    <color name="md_theme_light_onSurface">#121212</color>
+    <color name="md_theme_light_surfaceVariant">#E8EAED</color>
+    <color name="md_theme_light_onSurfaceVariant">#444746</color>
 </resources>

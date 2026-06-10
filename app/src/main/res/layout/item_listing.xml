@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="@color/md_theme_light_surface">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,6 +17,7 @@
             android:id="@+id/textTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/md_theme_light_onSurface"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
 
         <TextView
@@ -23,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:textColor="@color/md_theme_light_onSurfaceVariant"
             android:textAppearance="@style/TextAppearance.Material3.LabelLarge" />
 
         <TextView
@@ -30,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:textColor="@color/md_theme_light_primary"
             android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
     </LinearLayout>
 

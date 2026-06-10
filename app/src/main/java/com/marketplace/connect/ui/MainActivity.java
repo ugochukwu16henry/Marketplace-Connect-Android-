@@ -73,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.categories_with_all,
-                android.R.layout.simple_spinner_item
+                R.layout.spinner_item
         );
-        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         categorySpinner.setAdapter(categoryAdapter);
     }
 
@@ -96,9 +96,9 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.sort_options,
-                android.R.layout.simple_spinner_item
+                R.layout.spinner_item
         );
-        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sortAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         sortSpinner.setAdapter(sortAdapter);
     }
 
