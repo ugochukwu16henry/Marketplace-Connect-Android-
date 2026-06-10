@@ -18,7 +18,56 @@ public class AddListingViewModel extends AndroidViewModel {
         repository = new ListingRepository(AppDatabase.getInstance(application).listingDao());
     }
 
+    public void loadListing(long listingId, ListingRepository.ListingCallback callback) {
+        repository.getById(listingId, callback);
+    }
+
     public ValidationResult validateAndSave(String title, String description, String priceText, String category, String imagePath) {
+        ValidationResult validation = validateInput(title, description, priceText);
+        if (!validation.isSuccess) {
+            return validation;
+        }
+
+        Listing listing = new Listing(
+                validation.parsedTitle,
+                validation.parsedDescription,
+                validation.parsedPrice,
+                category,
+                System.currentTimeMillis(),
+                imagePath
+        );
+        repository.insert(listing);
+        return ValidationResult.success();
+    }
+
+    public ValidationResult validateAndUpdate(
+            long listingId,
+            long createdAt,
+            String title,
+            String description,
+            String priceText,
+            String category,
+            String imagePath
+    ) {
+        ValidationResult validation = validateInput(title, description, priceText);
+        if (!validation.isSuccess) {
+            return validation;
+        }
+
+        Listing listing = new Listing(
+                validation.parsedTitle,
+                validation.parsedDescription,
+                validation.parsedPrice,
+                category,
+                createdAt,
+                imagePath
+        );
+        listing.setId(listingId);
+        repository.update(listing);
+        return ValidationResult.success();
+    }
+
+    private ValidationResult validateInput(String title, String description, String priceText) {
         String safeTitle = title == null ? "" : title.trim();
         String safeDescription = description == null ? "" : description.trim();
         String safePrice = priceText == null ? "" : priceText.trim();
@@ -42,35 +91,48 @@ public class AddListingViewModel extends AndroidViewModel {
             return ValidationResult.priceError();
         }
 
-        Listing listing = new Listing(safeTitle, safeDescription, price, category, System.currentTimeMillis(), imagePath);
-        repository.insert(listing);
-
-        return ValidationResult.success();
+        return ValidationResult.valid(safeTitle, safeDescription, price);
     }
 
     public static class ValidationResult {
         public final boolean isSuccess;
         public final ErrorField errorField;
+        public final String parsedTitle;
+        public final String parsedDescription;
+        public final double parsedPrice;
 
-        private ValidationResult(boolean isSuccess, ErrorField errorField) {
+        private ValidationResult(
+                boolean isSuccess,
+                ErrorField errorField,
+                String parsedTitle,
+                String parsedDescription,
+                double parsedPrice
+        ) {
             this.isSuccess = isSuccess;
             this.errorField = errorField;
+            this.parsedTitle = parsedTitle;
+            this.parsedDescription = parsedDescription;
+            this.parsedPrice = parsedPrice;
         }
 
         public static ValidationResult success() {
-            return new ValidationResult(true, ErrorField.NONE);
+            return new ValidationResult(true, ErrorField.NONE, "", "", 0);
+        }
+
+        public static ValidationResult valid(String title, String description, double price) {
+            return new ValidationResult(true, ErrorField.NONE, title, description, price);
         }
 
         public static ValidationResult titleError() {
-            return new ValidationResult(false, ErrorField.TITLE);
+            return new ValidationResult(false, ErrorField.TITLE, "", "", 0);
         }
 
         public static ValidationResult descriptionError() {
-            return new ValidationResult(false, ErrorField.DESCRIPTION);
+            return new ValidationResult(false, ErrorField.DESCRIPTION, "", "", 0);
         }
 
         public static ValidationResult priceError() {
-            return new ValidationResult(false, ErrorField.PRICE);
+            return new ValidationResult(false, ErrorField.PRICE, "", "", 0);
         }
     }
 

@@ -23,11 +23,17 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
 
     private final List<Listing> listings = new ArrayList<>();
     private final OnListingClickListener clickListener;
+    private final OnListingEditListener editListener;
     private final OnListingDeleteListener deleteListener;
     private final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
-    public ListingAdapter(OnListingClickListener clickListener, OnListingDeleteListener deleteListener) {
+    public ListingAdapter(
+            OnListingClickListener clickListener,
+            OnListingEditListener editListener,
+            OnListingDeleteListener deleteListener
+    ) {
         this.clickListener = clickListener;
+        this.editListener = editListener;
         this.deleteListener = deleteListener;
     }
 
@@ -62,6 +68,7 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
         private final TextView titleText;
         private final TextView categoryText;
         private final TextView priceText;
+        private final ImageButton editButton;
         private final ImageButton deleteButton;
 
         ListingViewHolder(@NonNull View itemView) {
@@ -70,6 +77,7 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
             titleText = itemView.findViewById(R.id.textTitle);
             categoryText = itemView.findViewById(R.id.textCategory);
             priceText = itemView.findViewById(R.id.textPrice);
+            editButton = itemView.findViewById(R.id.buttonEdit);
             deleteButton = itemView.findViewById(R.id.buttonDelete);
         }
 
@@ -80,12 +88,17 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
             priceText.setText(numberFormat.format(listing.getPrice()));
 
             itemView.setOnClickListener(v -> clickListener.onClicked(listing));
+            editButton.setOnClickListener(v -> editListener.onEditRequested(listing));
             deleteButton.setOnClickListener(v -> deleteListener.onDeleteRequested(listing));
         }
     }
 
     public interface OnListingClickListener {
         void onClicked(Listing listing);
+    }
+
+    public interface OnListingEditListener {
+        void onEditRequested(Listing listing);
     }
 
     public interface OnListingDeleteListener {

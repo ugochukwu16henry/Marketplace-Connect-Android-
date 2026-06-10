@@ -55,6 +55,15 @@
         </LinearLayout>
 
         <ImageButton
+            android:id="@+id/buttonEdit"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/edit_listing"
+            android:src="@android:drawable/ic_menu_edit"
+            app:tint="@color/md_theme_light_onSurfaceVariant" />
+
+        <ImageButton
             android:id="@+id/buttonDelete"
             android:layout_width="40dp"
             android:layout_height="40dp"

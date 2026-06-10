@@ -28,6 +28,10 @@ public class ListingRepository {
         DatabaseExecutor.run(() -> listingDao.insert(listing));
     }
 
+    public void update(Listing listing) {
+        DatabaseExecutor.run(() -> listingDao.insert(listing));
+    }
+
     public void seedDemoDataIfEmpty(List<Listing> listings) {
         DatabaseExecutor.run(() -> {
             if (listingDao.count() == 0 && listings != null && !listings.isEmpty()) {

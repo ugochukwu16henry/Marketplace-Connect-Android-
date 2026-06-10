@@ -4,7 +4,10 @@
     <string name="search_hint">Search by title or description</string>
     <string name="search">Search</string>
     <string name="add_listing">Add Listing</string>
+    <string name="edit_listing">Edit Listing</string>
     <string name="save_listing">Save Listing</string>
+    <string name="update_listing">Update Listing</string>
+    <string name="listing_updated">Listing updated successfully</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="price">Price</string>

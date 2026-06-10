@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra(ListingDetailsActivity.EXTRA_LISTING_ID, listing.getId());
                     startActivity(intent);
                 },
+                this::openEditListing,
                 this::confirmDeleteListing
         );
 
@@ -151,6 +152,12 @@ public class MainActivity extends AppCompatActivity {
             return MainViewModel.SortOption.PRICE_HIGH_LOW;
         }
         return MainViewModel.SortOption.NEWEST;
+    }
+
+    private void openEditListing(Listing listing) {
+        Intent intent = new Intent(this, AddListingActivity.class);
+        intent.putExtra(AddListingActivity.EXTRA_LISTING_ID, listing.getId());
+        startActivity(intent);
     }
 
     private void confirmDeleteListing(Listing listing) {

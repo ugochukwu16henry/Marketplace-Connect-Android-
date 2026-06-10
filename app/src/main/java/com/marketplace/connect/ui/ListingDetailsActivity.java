@@ -1,5 +1,6 @@
 package com.marketplace.connect.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -45,8 +46,10 @@ public class ListingDetailsActivity extends AppCompatActivity {
         TextView categoryText = findViewById(R.id.detailsCategory);
         TextView priceText = findViewById(R.id.detailsPrice);
         TextView descriptionText = findViewById(R.id.detailsDescription);
+        Button editButton = findViewById(R.id.buttonEditListing);
         Button deleteButton = findViewById(R.id.buttonDeleteListing);
 
+        editButton.setOnClickListener(v -> openEditListing());
         deleteButton.setOnClickListener(v -> confirmDelete());
 
         repository.getById(listingId, listing -> runOnUiThread(() ->
@@ -72,6 +75,12 @@ public class ListingDetailsActivity extends AppCompatActivity {
         categoryText.setText(listing.getCategory());
         priceText.setText(numberFormat.format(listing.getPrice()));
         descriptionText.setText(listing.getDescription());
+    }
+
+    private void openEditListing() {
+        Intent intent = new Intent(this, AddListingActivity.class);
+        intent.putExtra(AddListingActivity.EXTRA_LISTING_ID, listingId);
+        startActivity(intent);
     }
 
     private void confirmDelete() {
