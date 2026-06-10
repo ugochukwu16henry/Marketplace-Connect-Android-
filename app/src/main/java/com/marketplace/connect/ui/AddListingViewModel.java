@@ -18,7 +18,7 @@ public class AddListingViewModel extends AndroidViewModel {
         repository = new ListingRepository(AppDatabase.getInstance(application).listingDao());
     }
 
-    public ValidationResult validateAndSave(String title, String description, String priceText, String category) {
+    public ValidationResult validateAndSave(String title, String description, String priceText, String category, String imagePath) {
         String safeTitle = title == null ? "" : title.trim();
         String safeDescription = description == null ? "" : description.trim();
         String safePrice = priceText == null ? "" : priceText.trim();
@@ -42,7 +42,7 @@ public class AddListingViewModel extends AndroidViewModel {
             return ValidationResult.priceError();
         }
 
-        Listing listing = new Listing(safeTitle, safeDescription, price, category, System.currentTimeMillis());
+        Listing listing = new Listing(safeTitle, safeDescription, price, category, System.currentTimeMillis(), imagePath);
         repository.insert(listing);
 
         return ValidationResult.success();

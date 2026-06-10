@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 import com.marketplace.connect.model.Listing;
 
-@Database(entities = {Listing.class}, version = 1, exportSchema = false)
+@Database(entities = {Listing.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "marketplace_connect.db";

@@ -2,6 +2,7 @@ package com.marketplace.connect.ui;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +13,7 @@ import com.marketplace.connect.R;
 import com.marketplace.connect.data.ListingRepository;
 import com.marketplace.connect.db.AppDatabase;
 import com.marketplace.connect.model.Listing;
+import com.marketplace.connect.util.ListingImageHelper;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -38,6 +40,7 @@ public class ListingDetailsActivity extends AppCompatActivity {
 
         repository = new ListingRepository(AppDatabase.getInstance(this).listingDao());
 
+        ImageView imageView = findViewById(R.id.detailsImage);
         TextView titleText = findViewById(R.id.detailsTitle);
         TextView categoryText = findViewById(R.id.detailsCategory);
         TextView priceText = findViewById(R.id.detailsPrice);
@@ -47,11 +50,12 @@ public class ListingDetailsActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(v -> confirmDelete());
 
         repository.getById(listingId, listing -> runOnUiThread(() ->
-                bindListing(listing, titleText, categoryText, priceText, descriptionText)));
+                bindListing(listing, imageView, titleText, categoryText, priceText, descriptionText)));
     }
 
     private void bindListing(
             Listing listing,
+            ImageView imageView,
             TextView titleText,
             TextView categoryText,
             TextView priceText,
@@ -63,6 +67,7 @@ public class ListingDetailsActivity extends AppCompatActivity {
         }
 
         currentListing = listing;
+        ListingImageHelper.bind(imageView, listing.getImagePath());
         titleText.setText(listing.getTitle());
         categoryText.setText(listing.getCategory());
         priceText.setText(numberFormat.format(listing.getPrice()));

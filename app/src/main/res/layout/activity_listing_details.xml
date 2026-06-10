@@ -10,8 +10,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/detailsImage"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:background="@color/md_theme_light_surfaceVariant"
+            android:contentDescription="@string/listing_photo"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/detailsTitle"
+            android:layout_marginTop="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/md_theme_light_onBackground"

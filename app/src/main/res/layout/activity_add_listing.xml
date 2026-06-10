@@ -16,6 +16,23 @@
             android:text="@string/add_listing"
             android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
 
+        <ImageView
+            android:id="@+id/imagePreview"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/md_theme_light_surfaceVariant"
+            android:contentDescription="@string/listing_photo"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/buttonTakePhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/take_photo" />
+
         <EditText
             android:id="@+id/inputTitle"
             android:layout_width="match_parent"

@@ -1,15 +1,29 @@
 package com.marketplace.connect.ui;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.marketplace.connect.R;
+import com.marketplace.connect.util.ListingImageHelper;
+
+import java.io.File;
+import java.io.IOException;
 
 public class AddListingActivity extends AppCompatActivity {
 
@@ -17,13 +31,36 @@ public class AddListingActivity extends AppCompatActivity {
     private static final String STATE_DESCRIPTION = "state_description";
     private static final String STATE_PRICE = "state_price";
     private static final String STATE_CATEGORY_POSITION = "state_category_position";
+    private static final String STATE_IMAGE_PATH = "state_image_path";
 
     private EditText titleInput;
     private EditText descriptionInput;
     private EditText priceInput;
     private Spinner categorySpinner;
+    private ImageView imagePreview;
 
     private AddListingViewModel viewModel;
+    private String imagePath;
+
+    private final ActivityResultLauncher<String> requestCameraPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    launchCamera();
+                } else {
+                    Toast.makeText(this, R.string.camera_permission_required, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+    private final ActivityResultLauncher<Uri> takePictureLauncher =
+            registerForActivityResult(new ActivityResultContracts.TakePicture(), success -> {
+                if (success) {
+                    ListingImageHelper.bind(imagePreview, imagePath);
+                } else {
+                    imagePath = null;
+                    ListingImageHelper.bind(imagePreview, null);
+                    Toast.makeText(this, R.string.photo_capture_failed, Toast.LENGTH_SHORT).show();
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +73,19 @@ public class AddListingActivity extends AppCompatActivity {
         descriptionInput = findViewById(R.id.inputDescription);
         priceInput = findViewById(R.id.inputPrice);
         categorySpinner = findViewById(R.id.spinnerCategory);
+        imagePreview = findViewById(R.id.imagePreview);
+        Button takePhotoButton = findViewById(R.id.buttonTakePhoto);
 
         setupCategorySpinner();
+        takePhotoButton.setOnClickListener(v -> requestCameraAndCapture());
 
         if (savedInstanceState != null) {
             titleInput.setText(savedInstanceState.getString(STATE_TITLE, ""));
             descriptionInput.setText(savedInstanceState.getString(STATE_DESCRIPTION, ""));
             priceInput.setText(savedInstanceState.getString(STATE_PRICE, ""));
             categorySpinner.setSelection(savedInstanceState.getInt(STATE_CATEGORY_POSITION, 0));
+            imagePath = savedInstanceState.getString(STATE_IMAGE_PATH);
+            ListingImageHelper.bind(imagePreview, imagePath);
         }
 
         findViewById(R.id.buttonSaveListing).setOnClickListener(v -> saveListing());
@@ -59,13 +101,49 @@ public class AddListingActivity extends AppCompatActivity {
         categorySpinner.setAdapter(categoryAdapter);
     }
 
+    private void requestCameraAndCapture() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            launchCamera();
+        } else {
+            requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+        }
+    }
+
+    private void launchCamera() {
+        try {
+            File picturesDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            if (picturesDir == null) {
+                Toast.makeText(this, R.string.photo_capture_failed, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            File imageFile = File.createTempFile("listing_", ".jpg", picturesDir);
+            imagePath = imageFile.getAbsolutePath();
+            Uri imageUri = FileProvider.getUriForFile(
+                    this,
+                    getPackageName() + ".fileprovider",
+                    imageFile
+            );
+            takePictureLauncher.launch(imageUri);
+        } catch (IOException e) {
+            imagePath = null;
+            Toast.makeText(this, R.string.photo_capture_failed, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void saveListing() {
         String title = titleInput.getText().toString().trim();
         String description = descriptionInput.getText().toString().trim();
         String priceText = priceInput.getText().toString().trim();
         String category = categorySpinner.getSelectedItem().toString();
 
-        AddListingViewModel.ValidationResult result = viewModel.validateAndSave(title, description, priceText, category);
+        AddListingViewModel.ValidationResult result = viewModel.validateAndSave(
+                title,
+                description,
+                priceText,
+                category,
+                imagePath
+        );
         if (!result.isSuccess) {
             if (result.errorField == AddListingViewModel.ErrorField.TITLE) {
                 titleInput.setError(getString(R.string.error_title_required));
@@ -88,5 +166,6 @@ public class AddListingActivity extends AppCompatActivity {
         outState.putString(STATE_DESCRIPTION, descriptionInput.getText().toString());
         outState.putString(STATE_PRICE, priceInput.getText().toString());
         outState.putInt(STATE_CATEGORY_POSITION, categorySpinner.getSelectedItemPosition());
+        outState.putString(STATE_IMAGE_PATH, imagePath);
     }
 }

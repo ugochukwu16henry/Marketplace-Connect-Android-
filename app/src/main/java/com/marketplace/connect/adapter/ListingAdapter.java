@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marketplace.connect.R;
 import com.marketplace.connect.model.Listing;
+import com.marketplace.connect.util.ListingImageHelper;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -56,6 +58,7 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
 
     class ListingViewHolder extends RecyclerView.ViewHolder {
 
+        private final ImageView listingImage;
         private final TextView titleText;
         private final TextView categoryText;
         private final TextView priceText;
@@ -63,6 +66,7 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
 
         ListingViewHolder(@NonNull View itemView) {
             super(itemView);
+            listingImage = itemView.findViewById(R.id.imageListing);
             titleText = itemView.findViewById(R.id.textTitle);
             categoryText = itemView.findViewById(R.id.textCategory);
             priceText = itemView.findViewById(R.id.textPrice);
@@ -70,6 +74,7 @@ public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingV
         }
 
         void bind(Listing listing) {
+            ListingImageHelper.bind(listingImage, listing.getImagePath());
             titleText.setText(listing.getTitle());
             categoryText.setText(listing.getCategory());
             priceText.setText(numberFormat.format(listing.getPrice()));

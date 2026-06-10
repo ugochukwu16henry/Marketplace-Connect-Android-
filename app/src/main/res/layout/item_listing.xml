@@ -14,6 +14,16 @@
         android:orientation="horizontal"
         android:padding="12dp">
 
+        <ImageView
+            android:id="@+id/imageListing"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginEnd="12dp"
+            android:background="@color/md_theme_light_surfaceVariant"
+            android:contentDescription="@string/listing_photo"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
