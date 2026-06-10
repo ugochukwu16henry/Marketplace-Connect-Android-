@@ -33,9 +33,32 @@ Marketplace Connect is a native Android classified ads app built with Java.
 
 ## How to Run
 
+### Local (Android Studio on your PC)
+
 1. Open the project in Android Studio.
 2. Let Android Studio sync Gradle dependencies.
 3. Run on an emulator or physical Android device.
+
+### Firebase Studio (browser / cloud)
+
+[![Open in Firebase Studio](https://img.shields.io/badge/Open%20in-Firebase%20Studio-orange?logo=firebase)](https://studio.firebase.google.com/import?url=https://github.com/ugochukwu16henry/Marketplace-Connect-Android-)
+
+**Recommended for this project — Android Studio Cloud**
+
+1. Open [Android Studio Cloud workspace](https://studio.firebase.google.com/new/android-studio) and sign in with Google.
+2. Wait for the cloud Android Studio IDE to load (SDK is pre-installed).
+3. In Android Studio: **Get from VCS** → **GitHub** → clone `ugochukwu16henry/Marketplace-Connect-Android-`.
+4. Open the cloned project folder and let Gradle sync finish.
+5. Start an emulator from **Device Manager**, then click **Run**.
+
+**Alternative — import repo into Firebase Studio**
+
+1. Open the [import link](https://studio.firebase.google.com/import?url=https://github.com/ugochukwu16henry/Marketplace-Connect-Android-) and sign in.
+2. Name the workspace and click **Import** (authenticate GitHub if the repo is private).
+3. Gradle sync runs automatically via `.idx/dev.nix` on first open.
+4. Use the built-in Android emulator preview or run `./gradlew installDebug` in the terminal.
+
+> Enable third-party cookies in your browser if Firebase Studio does not load.
 
 ## Core App Flow
 
